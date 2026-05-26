@@ -4,15 +4,11 @@
  * SPDX-License-Identifier: CC0-1.0
  */
 
-#include <stdio.h>
 #include <inttypes.h>
-#include "sdkconfig.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
+#include "PlexusBLE.h"
 #include "nvs_flash.h"
-#include "esp_system.h"
 
-#include "ble.h"
+#include "PlexusBLE.h"
 
 void app_main(void)
 {
@@ -27,5 +23,5 @@ void app_main(void)
     }
     ESP_ERROR_CHECK(ret);
 
-    ble_init();
+    PlexusBLEInit();
 }

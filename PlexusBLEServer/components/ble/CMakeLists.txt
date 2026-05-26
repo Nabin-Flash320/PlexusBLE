@@ -1,20 +1,17 @@
 
 set(
-    SERVICE_SRCS 
-    "ble.c" 
-    "ble_gatts.c" 
-    "ble_gap.c"
-    "service_callbacks/example_service_handler.c"
+    PLEXUS_BLE_SRC_DIRS 
+    "PlexusBLE.c"
 )
+
 
 set(
-    SERVICE_INCLUDES
-    "."
-    "service_callbacks"
+    PLEXUS_BLE_INCLUDE_DIRS 
+    .
+    "NimBLEPort"
 )
 
-idf_component_register(SRCS ${SERVICE_SRCS}
-                        INCLUDE_DIRS ${SERVICE_INCLUDES}
-                        REQUIRES bt mbedtls esp_event
-)
+idf_component_register(SRCS ${PLEXUS_BLE_SRC_DIRS}
+                       INCLUDE_DIRS "${PLEXUS_BLE_INCLUDE_DIRS}"
+                       REQUIRES bt)
 
