@@ -31,6 +31,6 @@ void PlexusBLEInit(void)
 	ESP_ERROR_CHECK(esp_bt_controller_enable(ESP_BT_MODE_BLE));
 
 	NimBLEPortInit();
-	NimBLEAddService(gatt_svr_svcs);
+	NimBLEAddService(plexus_example_service);
 	NimBLEPortStart();
 }

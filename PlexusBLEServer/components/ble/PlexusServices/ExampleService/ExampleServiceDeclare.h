@@ -54,7 +54,7 @@ static const s_plexus_ble_characteristic_t gatt_svr_chr[] = {
     },
 };
 
-static const s_plexus_ble_service_t gatt_svr_svcs[] = {
+static const s_plexus_ble_service_t plexus_example_service[] = {
     {
         .type = BLE_GATT_SVC_TYPE_PRIMARY,
         .uuid = BLE_UUID128_DECLARE(PLEXUS_CUSTOM_SERVICE_UUID),
