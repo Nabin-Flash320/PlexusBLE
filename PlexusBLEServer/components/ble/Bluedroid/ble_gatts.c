@@ -189,7 +189,7 @@ void ble_gatts_callback(esp_gatts_cb_event_t event, esp_gatt_if_t gatts_if, esp_
                         }
                         else
                         {
-                            service_instance->characteristics++;
+                            service_instance->characteristics_added++;
                             if ((service_instance->characteristics_len > 0) && (service_instance->characteristics_added < service_instance->characteristics_len))
                             {
                                 /*

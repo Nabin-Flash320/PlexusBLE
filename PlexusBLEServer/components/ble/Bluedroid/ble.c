@@ -109,9 +109,9 @@ static s_gatts_service_inst_t gatt_profiles[BLE_PROFILE_ID_MAX] = {
 esp_ble_adv_data_t adv_data = {
     .set_scan_rsp = false,
     .include_name = true,
-    .include_txpower = true,
-    .min_interval = 0x0006,
-    .max_interval = 0x0010,
+    .include_txpower = false,  // moved to scan response to fit within 31-byte limit
+    .min_interval = 0,
+    .max_interval = 0,
     .appearance = 0,
     .manufacturer_len = 0,
     .p_manufacturer_data = NULL,
@@ -120,6 +120,20 @@ esp_ble_adv_data_t adv_data = {
     .service_uuid_len = 0,
     .p_service_uuid = NULL,
     .flag = (ESP_BLE_ADV_FLAG_GEN_DISC | ESP_BLE_ADV_FLAG_BREDR_NOT_SPT),
+};
+
+esp_ble_adv_data_t scan_rsp_data = {
+    .set_scan_rsp = true,
+    .include_name = false,
+    .include_txpower = true,
+    .appearance = 0,
+    .manufacturer_len = 0,
+    .p_manufacturer_data = NULL,
+    .service_data_len = 0,
+    .p_service_data = NULL,
+    .service_uuid_len = 0,
+    .p_service_uuid = NULL,
+    .flag = 0,
 };
 
 static esp_err_t ble_gap_set_ble_device_name()
@@ -164,6 +178,11 @@ void ble_init()
     if (ret)
     {
         ESP_LOGE(BLE_TAG, "config adv data failed, error code = %s", esp_err_to_name(ret));
+    }
+    ret = esp_ble_gap_config_adv_data(&scan_rsp_data);
+    if (ret)
+    {
+        ESP_LOGE(BLE_TAG, "config scan rsp data failed, error code = %s", esp_err_to_name(ret));
     }
 
     esp_ble_gatts_show_local_database();

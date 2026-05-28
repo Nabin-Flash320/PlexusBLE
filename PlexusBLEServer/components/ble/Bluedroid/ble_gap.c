@@ -7,6 +7,12 @@
 
 #define TAG __FILE__
 
+#define ADV_DATA_READY      (1 << 0)
+#define SCAN_RSP_DATA_READY (1 << 1)
+#define ADV_DATA_ALL_READY  (ADV_DATA_READY | SCAN_RSP_DATA_READY)
+
+static uint8_t s_adv_data_ready = 0;
+
 esp_ble_adv_params_t adv_param = {
     .adv_int_min = 0x0020,
     .adv_int_max = 0x0040,
@@ -30,14 +36,27 @@ void ble_gap_callbacak(esp_gap_ble_cb_event_t event, esp_ble_gap_cb_param_t *par
         ESP_LOGI(TAG, "ESP_GAP_BLE_ADV_DATA_SET_COMPLETE_EVT\n");
         if (ESP_BT_STATUS_SUCCESS == param->adv_data_cmpl.status)
         {
-            ESP_LOGI(TAG, "Starting BLE advertisement");
-            ble_gap_start_ble_advertisement();
+            s_adv_data_ready |= ADV_DATA_READY;
+            if (ADV_DATA_ALL_READY == s_adv_data_ready)
+            {
+                ESP_LOGI(TAG, "Starting BLE advertisement");
+                ble_gap_start_ble_advertisement();
+            }
         }
         break;
     }
     case ESP_GAP_BLE_SCAN_RSP_DATA_SET_COMPLETE_EVT:
     {
         ESP_LOGI(TAG, "ESP_GAP_BLE_SCAN_RSP_DATA_SET_COMPLETE_EVT\n");
+        if (ESP_BT_STATUS_SUCCESS == param->scan_rsp_data_cmpl.status)
+        {
+            s_adv_data_ready |= SCAN_RSP_DATA_READY;
+            if (ADV_DATA_ALL_READY == s_adv_data_ready)
+            {
+                ESP_LOGI(TAG, "Starting BLE advertisement");
+                ble_gap_start_ble_advertisement();
+            }
+        }
         break;
     }
     case ESP_GAP_BLE_ADV_DATA_RAW_SET_COMPLETE_EVT:
