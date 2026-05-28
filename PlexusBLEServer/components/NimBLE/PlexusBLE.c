@@ -1,9 +1,12 @@
 
 #include <string.h>
+
+#include <sdkconfig.h>
 #include "esp_log.h"
 #include "esp_bt.h"
 #include "esp_mac.h"
 
+#ifdef CONFIG_BT_NIMBLE_ENABLED
 #include "host/ble_uuid.h"
 #include "nimble/nimble_port.h"
 #include "nimble/nimble_port_freertos.h"
@@ -17,12 +20,15 @@
 #include "PlexusBLE.h"
 #include "NimBLEPortDefs.h"
 #include "PlexusServiceDefs.h"
+#endif //  CONFIG_BT_NIMBLE_ENABLED
 
 #define TAG "PlexusBLE"
 
+#ifdef CONFIG_BT_NIMBLE_ENABLED
 #define DECLARE_EXAMPLE_SERVICE 1
 #include "ExampleServiceDeclare.h"
 #undef DECLARE_EXAMPLE_SERVICE
+#endif // CONFIG_BT_NIMBLE_ENABLED
 
 void PlexusBLEInit(void)
 {
@@ -30,7 +36,9 @@ void PlexusBLEInit(void)
 	ESP_ERROR_CHECK(esp_bt_controller_init(&bt_cfg));
 	ESP_ERROR_CHECK(esp_bt_controller_enable(ESP_BT_MODE_BLE));
 
+#ifdef CONFIG_BT_NIMBLE_ENABLED
 	NimBLEPortInit();
 	NimBLEAddService(plexus_example_service);
 	NimBLEPortStart();
+#endif // CONFIG_BT_NIMBLE_ENABLED
 }

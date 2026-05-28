@@ -22,7 +22,7 @@ int ExampleServiceWriteCharAccessCallback(uint16_t conn_handle, uint16_t attr_ha
     os_mbuf_copydata(ctxt->om, 0, sizeof(writable_value), writable_value);
     writable_value_len = ctxt->om->om_len;
 
-    ESP_LOG_BUFFER_HEX(TAG, writable_value, sizeof(writable_value));
+    ESP_LOG_BUFFER_HEX(TAG, writable_value, writable_value_len);
     return 0;
 }
 
