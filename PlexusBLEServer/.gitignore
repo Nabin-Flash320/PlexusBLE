@@ -3,3 +3,4 @@ build
 .devcontainer
 sdkconfig.*
 sdkconfig
+.zed/
