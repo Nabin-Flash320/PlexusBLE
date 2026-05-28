@@ -1,12 +1,10 @@
 
-#include <string.h>
 
 #include <sdkconfig.h>
-#include "esp_log.h"
 #include "esp_bt.h"
-#include "esp_mac.h"
 
 #ifdef CONFIG_BT_NIMBLE_ENABLED
+
 #include "host/ble_uuid.h"
 #include "nimble/nimble_port.h"
 #include "nimble/nimble_port_freertos.h"
@@ -20,6 +18,11 @@
 #include "PlexusBLE.h"
 #include "NimBLEPortDefs.h"
 #include "PlexusServiceDefs.h"
+
+#elif defined(CONFIG_BT_BLUEDROID_ENABLED)
+
+#include "ble.h"
+
 #endif //  CONFIG_BT_NIMBLE_ENABLED
 
 #define TAG "PlexusBLE"
@@ -40,5 +43,7 @@ void PlexusBLEInit(void)
 	NimBLEPortInit();
 	NimBLEAddService(plexus_example_service);
 	NimBLEPortStart();
+#elif defined(CONFIG_BT_BLUEDROID_ENABLED)
+	ble_init();
 #endif // CONFIG_BT_NIMBLE_ENABLED
 }
